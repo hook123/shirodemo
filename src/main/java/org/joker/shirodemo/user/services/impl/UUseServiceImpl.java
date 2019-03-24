@@ -25,11 +25,8 @@ public class UUseServiceImpl implements IUUserService {
     UUserMapper uUserMapper;
 
     @Override
-    public UUser login(String email ,String pswd) {
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("email", email);
-        map.put("pswd", pswd);
-        UUser user = uUserMapper.login(map);
+    public UUser findUserByEmail(String email) {
+        UUser user = uUserMapper.findUserByEmail(email);
         return user;
     }
 

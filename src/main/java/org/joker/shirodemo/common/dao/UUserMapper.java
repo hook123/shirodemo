@@ -19,8 +19,6 @@ public interface UUserMapper {
 
     int updateByPrimaryKey(UUser record);
 
-	UUser login(Map<String, Object> map);
-
 	UUser findUserByEmail(String email);
 
 	List <UUser> findAll();

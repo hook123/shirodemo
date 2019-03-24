@@ -70,15 +70,8 @@
 		left join(select * from u_user_role where uid=#{id,jdbcType=BIGINT}) uur on uur.rid = ur.id
 		 -->
   </select>
-  
-  <!-- 登录 -->
-  <select id="login" resultMap="BaseResultMap" >
-  	 select 
-    <include refid="Base_Column_List" />
-    from u_user
-    where email = #{email,jdbcType=VARCHAR} and  pswd = #{pswd,jdbcType=VARCHAR} 
-  </select>
-  <!-- 根据邮箱|帐号查询 -->
+
+  <!-- 根据邮箱|帐号查询 | 登录-->
   <select id="findUserByEmail" resultMap="BaseResultMap" >
   	 select 
     <include refid="Base_Column_List" />

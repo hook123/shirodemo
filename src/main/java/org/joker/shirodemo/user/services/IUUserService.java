@@ -9,7 +9,7 @@ import org.joker.shirodemo.common.model.UUser;
  */
 public interface IUUserService {
 
-    UUser login(String email, String pswd);
+    UUser findUserByEmail(String email);
 
     int updateByPrimaryKeySelective(UUser user);
 }
