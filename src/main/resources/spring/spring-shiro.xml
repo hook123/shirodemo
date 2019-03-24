@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="sampleRealm"/>
+        <!--<property name="sessionManager" ref="sessionManager"/>-->
+        <!--<property name="rememberMeManager" ref="rememberMeManager"/>-->
+        <!--<property name="cacheManager" ref="customShiroCacheManager"/>-->
+    </bean>
+
+    <!-- 授权 认证 -->
+    <bean id="sampleRealm" class="org.joker.shirodemo.core.shiro.MySampleRealm"/>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--登录url-->
+        <property name="loginUrl" value="/login.html"/>
+        <!--登录成功后跳转url-->
+        <property name="successUrl" value="/admin/admin.html"/>
+        <!--无权跳转url-->
+        <property name="unauthorizedUrl" value="/unauth.html"/>
+        <!--	初始配置，现采用自定义	-->
+        <property name="filterChainDefinitions">
+            <ref bean="shiroFilterChainDefinitions"/>
+        </property>
+        <!-- 读取初始自定义权限内容-->
+    </bean>
+
+    <!-- Shiro权限过滤过滤器定义 -->
+    <!-- 具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截.  -->
+    <bean name="shiroFilterChainDefinitions" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                /framework/** = anon
+                /images/** = anon
+                /* = anon
+                /user/login.do = anon
+                /** = authc
+            </value>
+        </constructor-arg>
+    </bean>
+</beans>
