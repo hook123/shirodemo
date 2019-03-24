@@ -6,3 +6,4 @@ target/
 .mymetadata
 .myumldata
 .project
+logs/
