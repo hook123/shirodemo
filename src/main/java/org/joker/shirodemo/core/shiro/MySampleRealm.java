@@ -2,9 +2,12 @@ package org.joker.shirodemo.core.shiro;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.joker.shirodemo.common.model.UUser;
+import org.joker.shirodemo.common.utils.MathUtil;
 import org.joker.shirodemo.user.services.IUUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,8 +41,9 @@ public class MySampleRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
 
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        UUser user = iUUserService.login(token.getUsername(),String.copyValueOf(token.getPassword()));
+        String username =token.getUsername();
 
+        UUser user = iUUserService.findUserByEmail(username);
 
         if(null == user){
             throw new AccountException("帐号或密码不正确！");
@@ -49,10 +53,13 @@ public class MySampleRealm extends AuthorizingRealm {
         }else if(UUser._0.equals(user.getStatus())){
             throw new DisabledAccountException("帐号已经禁止登录！");
         }else{
-            //更新登录时间 last login time
-            user.setLastLoginTime(new Date());
-            iUUserService.updateByPrimaryKeySelective(user);
+
         }
-        return new SimpleAuthenticationInfo(user,user.getPswd(), getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPswd(), ByteSource.Util.bytes(user.getEmail()), getName());
+        System.out.println(info.getCredentials());
+        System.out.println(user.getPswd());
+        System.out.println(new String((char[]) token.getCredentials()));
+
+        return info;
     }
 }

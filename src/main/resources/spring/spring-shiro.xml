@@ -13,8 +13,16 @@
     </bean>
 
     <!-- 授权 认证 -->
-    <bean id="sampleRealm" class="org.joker.shirodemo.core.shiro.MySampleRealm"/>
+    <bean id="sampleRealm" class="org.joker.shirodemo.core.shiro.MySampleRealm">
+        <property name="credentialsMatcher" ref="hashedCredentialsMatcher"/>
+    </bean>
+    <!-- 凭证匹配器 info的密码比较器，其中实现了token中密码的加密-->
+    <bean id="hashedCredentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="MD5"/>
+        <property name="hashIterations" value="1024"/>
+    </bean>
 
+    <!--此过滤器必须与web.xml中的，过滤器同名-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <!--登录url-->
