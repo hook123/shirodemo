@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>欢迎超级管理员登录</title>
+    <link rel="stylesheet" href="framework/components/bootstrap/css/bootstrap.css">
+    <script src="framework/components/jquery/dist/jquery.js"></script>
+    <script src="framework/components/bootstrap/js/bootstrap.js"></script>
+    <script>
+        $(function () {
+            //登录框动画
+            $('.login-box').animate({
+                top: "45%",
+                opacity: "1.0"
+            }, 1000);
+            //随机更换背景
+            var bg_url = 'url("images/wall/' + Math.ceil((Math.random() * 4)) + '.jpg")';
+            $('.container-fluid').css("background-image", bg_url);
+            //==============================
+
+
+            //点击登陆按钮时进行的判断
+            $("#login-bt").on("click", function () {
+                $.ajax({
+                    type: "post",
+                    url: "./user/login.do",
+                    dataType: "json",
+                    data: $('#loginForm').serialize(),
+                    success: function (data) {
+                        //用户名和密码校验错误
+                        if (200 === data.status) {
+                            window.location.href=data.back_url;
+                        } else {
+                            if (500 === data.status) {
+                                $(".login-alert").text("该用户不存在或密码错误!!").show();
+                            }
+                            if (300 === data.status) {
+                                $(".login-alert").text("验证码错误").show();
+                            }
+                            //抖动
+                            for (var i = 0; i < 5; i++) {
+                                $('.login-box').animate({left: "48%"}, 30).animate({left: "52%"}, 30).animate({left: "50%"}, 30);
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("请求失败！");
+                    }
+                });
+            });
+
+        });
+    </script>
+    <style>
+        .container-fluid {
+            background-image: url("images/wall/2.jpg");
+            background: no-repeat center center;
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+        }
+
+        .shake {
+            animation: shake 1s linear alternate;
+        }
+
+        .login-box {
+            width: 428px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 150px rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            opacity: 0;
+        }
+
+        .login-footer {
+            color: #eee;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            /*filter: blur(4px) brightness(1.0);*/
+        }
+
+        .logo {
+            color: #aaddff;
+            width: 100%;
+            font-size: 40px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .login-form {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 0 0 4px 4px;
+            padding: 50px 100px 50px;
+        }
+    </style>
+
+</head>
+<body>
+<!--//全屏响应式背景，设置
+//容器fluid，绝对定位，宽高100%,
+//背景居中，溢出隐藏，size：cover；
+-->
+<div class="container-fluid">
+
+    <!--//模态框，忘记秘密提示-->
+    <!--// fade 淡入淡出效果
+    // id 要与点击对象关联-->
+    <div class="modal fade" id="rpw-dialog" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>提示
+                    </h4>
+                </div>
+                <div class="modal-body"
+                     style="background: url('./images/wall/warning.png') no-repeat 50px center; padding-left: 150px">
+                    <p>管理员忘记密码:</p>
+                    <p>请联系程序开发者;</p>
+                    <br>
+                    <p>非管理员忘记密码:</p>
+                    <p>联系管理员重置！</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--
+===================================以上模态框
+-->
+
+    <div class="login-box">
+        <div class="box-litle" style="height: 150px;">
+            <div class="lan-menu">
+                <div class="btn-group">
+                    <button type="button"
+                            class="btn btn-sm  btn-default dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="color: #FFFFFF; margin: 5px; background-color: rgba(255, 255, 255, 0.2); border: none">
+                        <span class="glyphicon glyphicon-flag"></span> Language <span
+                            class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><span
+                                class="glyphicon glyphicon-star-empty"></span>English</a></li>
+                        <li><a href="#"><span
+                                class="glyphicon glyphicon-star-empty"></span>简体中文</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="logo">
+                <span><span class="glyphicon-cloud"></span>cake-shop</span>
+            </div>
+            <div class="info" style="text-align: right; margin: 20px 50px;">——超级管理员登录</div>
+        </div>
+
+        <!--
+    ==============================以下form表单
+    注意:
+    1、每组标签与输入框用form-group包裹，id与aria-describedby对应
+    2、bootstrap自带图标组合输入框时，向下偏1px，使用top：0，修复；
+    3、font-awesome字体图标组合输入框时，与输入框不在同一行，使用display：table-cell修复；
+    4、font-awesome字体图标，恢复同一行后，高度大于输入框，使用vertical-align:middle，垂直居中修复
+    -->
+        <div class="login-form">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="sr-only" for="username">用户名</label>
+                    <div class="input-group">
+							<span class="input-group-addon glyphicon glyphicon-user"
+                                  id="sizing-addon1" style="top: 0"></span> <input type="text"
+                                                                                   class="form-control" id="username"
+                                                                                   name="email"
+                                                                                   aria-describedby="sizing-addon1"
+                                                                                   placeholder="请输入用户名"
+                                                                                   required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="password">密码</label>
+                    <div class="input-group">
+							<span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon2"
+                                  style="top: 0"></span> <input
+                            type="password" class="form-control" id="password"
+                            name="pswd" aria-describedby="sizing-addon2"
+                            placeholder="请输入密码" required="required">
+                    </div>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="rememberMe">记住密码
+                    </label>
+                    <a href="#" data-toggle="modal" data-target="#rpw-dialog" style="float: right;">忘记密码</a>
+                </div>
+                <a id="login-bt" class="btn btn-group-justified btn-info">登录</a>
+            </form>
+            <div class="login-alert"
+                 style="color: red; width: 80%; max-height: 50px; text-align: center; margin: 10px auto ;">
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 login-footer">
+				<span class="copyright-content"> Powered by <a
+                        href="https://kodcloud.com/?kodref=" target="_blank"
+                        draggable="false">KodExplorer v4.37</a> &amp; lamp <a href="#"
+                                                                              class="icon-info-sign copyright-bottom pl-5"
+                                                                              draggable="false"></a>
+					<span style="display: none; width: 0; height: 0;"></span>
+				</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

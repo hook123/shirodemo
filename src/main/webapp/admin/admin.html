@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>AdminLTE 2 | 仪表盘</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../framework/components/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../framework/components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../framework/components/Ionicons/css/ionicons.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../framework/adminlte/css/AdminLTE.css">
+
+
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <!--<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">-->
+    <link rel="stylesheet" href="../framework/adminlte/css/skins/skin-blue.css">
+    <script src="../framework/components/vue/vue.js"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper" id="app">
+
+    <!--LOGO 和导航-->
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="admin.html" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>CX</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>CX</b>BLog</span>
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/static/commons/img/avatar.png" class="user-image">
+                            <span class="hidden-xs">您好 joker , 欢迎回来</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <img src="/static/commons/img/avatar.png" class="img-circle">
+                                <p>
+                                    joker -
+                                    <small>2019-03-18 16:58:09.0</small>
+                                </p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="/admin/user/me" class="btn btn-default btn-flat">我的资料</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="/admin/doLogout?csrf_token=d96aa5f85bc04e8ca3a0bf9174e3acf2"
+                                       class="btn btn-default btn-flat">退出</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!--侧边栏菜单-->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree" id="sidebar-menu">
+                <li class="block"></li>
+                <li class="link">
+                    <a href="/admin/index"><i class="fa fa-dashboard"></i> <span>面板</span></a>
+                </li>
+
+                <li class="block"></li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-file-text"></i> <span>文章</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/article" target="">文章管理</a></li>
+                        <li><a href="/admin/article/write" target="">写文章</a></li>
+                        <li><a href="/admin/article/category" target="">分类</a></li>
+                        <li><a href="/admin/article/tag" target="">标签</a></li>
+                        <li><a href="/admin/article/comment" target="">评论</a></li>
+                        <li><a href="/admin/article/setting" target="">设置</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-file"></i> <span>页面</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/page" target="">页面管理</a></li>
+                        <li><a href="/admin/page/write" target="">新建</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-folder-open"></i> <span>附件</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/attachment" target="">所有附件</a></li>
+                        <li><a href="/admin/attachment/upload" target="">上传</a></li>
+                        <li><a href="/admin/attachment/setting" target="">设置</a></li>
+                    </ul>
+                </li>
+                <li class="header">基础</li>
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-user"></i> <span>用户中心</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="#" @click="getUserList()" target="">用户列表</a></li>
+                        <li><a href="#" @click="getUserList()" target="">在线用户</a></li>
+                        <li><a href="/admin/user/me" target="">我的资料</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-user"></i> <span>权限管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/user/role" target="">角色列表</a></li>
+                        <li><a href="/admin/permission" target="">权限列表</a></li>
+                        <li><a href="/admin/user/me" target="">权限分配</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-fw fa-wechat"></i> <span>微信</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/wechat/reply" target="">默认回复</a></li>
+                        <li><a href="/admin/wechat/keyword" target="">自动回复</a></li>
+                        <li><a href="/admin/wechat/addons" target="">运营插件</a></li>
+                        <li><a href="/admin/wechat/menu" target="">菜单设置</a></li>
+                        <li><a href="/admin/wechat/base" target="">基础设置</a></li>
+                        <li><a href="/admin/wechat/miniprogram" target="">小程序</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-magic"></i> <span>模板</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/template" target="">所有模板</a></li>
+                        <li><a href="/admin/template/install" target="">安装</a></li>
+                        <li><a href="/admin/template/menu" target="">菜单</a></li>
+                        <li><a href="/admin/template/setting" target="">设置</a></li>
+                        <li><a href="/admin/template/edit" target="">编辑</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-plug"></i> <span>插件</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/addon" target="">所有插件</a></li>
+                        <li><a href="/admin/addon/install" target="">安装</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-cog"></i> <span>系统</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin/setting" target="">常规</a></li>
+                        <li><a href="/admin/setting/connection" target="">通信</a></li>
+                        <li><a href="/admin/setting/api" target="">接口</a></li>
+                        <li><a href="/admin/setting/reg" target="">登录注册</a></li>
+                        <li><a href="/admin/setting/cdn" target="">网站加速</a></li>
+                        <li><a href="/admin/setting/seo" target="">搜索优化</a></li>
+                        <li><a href="/admin/setting/tools" target="">小工具箱</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+
+    <!--页标题和内容-->
+    <div class="content-wrapper">
+        <div class="box">
+            <template>
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{contentTilte}}</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>选择</th>
+                            <th>序号</th>
+                            <th>昵称</th>
+                            <th>邮箱/账号</th>
+                            <th>冻结</th>
+                            <th>创建时间</th>
+                            <th>最后登录</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="(o,index) in userPage.list">
+                            <td><input type="checkbox" name="check" :value="o.id"></td>
+                            <td>{{index+1}}</td>
+                            <td>{{o.nickname}}</td>
+                            <td>{{o.email}}</td>
+                            <td>{{ o.status==1 ? '正常' : '冻结' }}</td>
+                            <td>{{o.createTime}}</td>
+                            <td>{{o.lastLoginTime}}</td>
+                            <td>
+                                <span class="fa fa-fw fa-eye-slash fa-lg" data-toggle="tooltip" data-placement="top"
+                                      title="冻结"></span>
+                                <span class="fa fa-fw fa-trash fa-lg" data-toggle="tooltip" data-placement="top"
+                                      title="删除"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <!--分页-->
+                <div class="box-footer clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li><a href="#" @click="getUserList(userPage.navigateFirstPage)"
+                               v-if="!userPage.isFirstPage">«</a>
+                        </li>
+                        <li v-for="n in userPage.navigatepageNums" @click="getUserList(n)"><a href="#">{{n}}</a></li>
+                        <li><a href="#" @click="getUserList(userPage.navigateLastPage)"
+                               v-if="!userPage.isLastPage">»</a>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!--控制面板-->
+    <aside class="control-sidebar control-sidebar-dark">
+    </aside>
+
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            version v2.0-rc.5
+        </div>
+        Copyright © 2015-2018 <a href="http://jpress.io" target="_blank">JPress Studio</a>. All rights
+        reserved.
+    </footer>
+
+</div>
+<!-- jQuery-->
+<script src="../framework/components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../framework/components/bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../framework/adminlte/js/adminlte.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+
+        const app = new Vue({
+            el: "#app",
+            data: {
+                userPage: {},
+                contentTilte: ""
+            },
+            created: function () {
+
+            },
+            methods: {
+                getUserList: function (pn) {
+                    console.log(pn);
+                    var _self = this;
+                    _self.contentTilte = "用户列表";
+                    var url = "../member/userlist.do";
+                    if (pn != null) {
+                        url = url + "?pn=" + pn;
+                    }
+                    $.get(url, function (data) {
+                        _self.userPage = data;
+                    }, "json");
+                }
+            }
+        });
+        // ############### Vue end
+
+    })
+</script>
+</body>
+</html>
