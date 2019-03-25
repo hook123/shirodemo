@@ -56,9 +56,6 @@ public class MySampleRealm extends AuthorizingRealm {
 
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPswd(), ByteSource.Util.bytes(user.getEmail()), getName());
-        System.out.println(info.getCredentials());
-        System.out.println(user.getPswd());
-        System.out.println(new String((char[]) token.getCredentials()));
 
         return info;
     }

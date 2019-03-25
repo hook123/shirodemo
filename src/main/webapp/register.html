@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>欢迎超级管理员登录</title>
+    <title>用户注册</title>
     <link rel="stylesheet" href="framework/components/bootstrap/css/bootstrap.css">
     <script src="framework/components/jquery/dist/jquery.js"></script>
     <script src="framework/components/bootstrap/js/bootstrap.js"></script>
@@ -31,7 +31,7 @@
                     success: function (data) {
                         //用户名和密码校验错误
                         if (200 === data.status) {
-                            window.location.href=data.back_url;
+                            window.location.href = data.back_url;
                         } else {
                             if (500 === data.status) {
                                 $(".login-alert").text("该用户不存在或密码错误!!").show();
@@ -172,7 +172,7 @@
             <div class="logo">
                 <span><span class="glyphicon-cloud"></span>ShiroDemo</span>
             </div>
-            <div class="info" style="text-align: right; margin: 20px 50px;">——用户登录</div>
+            <div class="info" style="text-align: right; margin: 20px 50px;">——用户注册</div>
         </div>
 
         <!--
@@ -186,36 +186,60 @@
         <div class="login-form">
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="sr-only" for="username">用户名</label>
+                    <label class="sr-only" for="nickname">昵称</label>
                     <div class="input-group">
 							<span class="input-group-addon glyphicon glyphicon-user"
                                   id="sizing-addon1" style="top: 0"></span> <input type="text"
-                                                                                   class="form-control" id="username"
-                                                                                   name="email"
+                                                                                   class="form-control" id="nickname"
+                                                                                   name="nickname"
                                                                                    aria-describedby="sizing-addon1"
-                                                                                   placeholder="请输入用户名"
+                                                                                   placeholder="请输入昵称"
+                                                                                   required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="email">邮箱</label>
+                    <div class="input-group">
+							<span class="input-group-addon glyphicon glyphicon-envelope"
+                                  id="sizing-addon2" style="top: 0"></span> <input type="text"
+                                                                                   class="form-control" id="email"
+                                                                                   name="email"
+                                                                                   aria-describedby="sizing-addon2"
+                                                                                   placeholder="请输入邮箱"
                                                                                    required="required">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="password">密码</label>
                     <div class="input-group">
-							<span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon2"
+							<span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon3"
                                   style="top: 0"></span> <input
                             type="password" class="form-control" id="password"
-                            name="pswd" aria-describedby="sizing-addon2"
+                            name="pswd" aria-describedby="sizing-addon3"
                             placeholder="请输入密码" required="required">
                     </div>
                 </div>
-
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="rememberMe">记住密码
-                    </label>
-                    <a href="#" data-toggle="modal" data-target="#rpw-dialog" style="float: right;">忘记密码</a>
+                <div class="form-group">
+                    <label class="sr-only" for="password2">密码</label>
+                    <div class="input-group">
+							<span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon5"
+                                  style="top: 0"></span> <input
+                            type="password" class="form-control" id="password2"
+                            name="pswd" aria-describedby="sizing-addon5"
+                            placeholder="请确认密码" required="required">
+                    </div>
                 </div>
-                <a id="login-bt" class="btn btn-group-justified btn-info">登录</a>
-                <a href="register.html" target="_parent" class="btn btn-group-justified btn-warning">注册</a>
+                   <div class="form-group">
+                       <div class="input-group" id="checkCoke">
+                        <span class="input-group-addon" id="sizing-addon4" style="top: 0;padding: 0">
+                            <img alt="验证码" title="看不清,请点击图片" src="./common/getGifCode.do"
+                                 onclick="this.src='./common/getGifCode.do?t='+new Date().getTime();"></span>
+                           <input type="text"
+                                  class="form-control" id="checkCode" name="vcode"
+                                  aria-describedby="sizing-addon4" placeholder="请输入验证码" required="required">
+                       </div>
+                   </div>
+                <a id="login-bt" class="btn btn-group-justified btn-info">注册</a>
             </form>
             <div class="login-alert"
                  style="color: red; width: 80%; max-height: 50px; text-align: center; margin: 10px auto ;">
@@ -228,8 +252,8 @@
 				<span class="copyright-content"> Powered by <a
                         href="https://kodcloud.com/?kodref=" target="_blank"
                         draggable="false">ShiroDemo v0.1</a> &amp; lamp <a href="#"
-                                                                              class="icon-info-sign copyright-bottom pl-5"
-                                                                              draggable="false"></a>
+                                                                           class="icon-info-sign copyright-bottom pl-5"
+                                                                           draggable="false"></a>
 					<span style="display: none; width: 0; height: 0;"></span>
 				</span>
         </div>

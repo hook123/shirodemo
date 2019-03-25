@@ -20,6 +20,7 @@ import org.joker.shirodemo.user.services.IUUserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -111,5 +112,12 @@ public class UserLoginController {
 			LoggerUtils.fmtError(getClass(), e, "退出出现错误，%s。", e.getMessage());
 		}
 		return new ModelAndView("redirect:/login.html");
+	}
+
+	@RequestMapping(value = "register.do",method = RequestMethod.POST)
+	public Map<String, Object> register(String vcode,UUser user){
+
+
+		return resultMap;
 	}
 }

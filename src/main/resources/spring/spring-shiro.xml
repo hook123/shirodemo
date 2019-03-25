@@ -45,6 +45,7 @@
             <value>
                 /framework/** = anon
                 /images/** = anon
+                /common/* = anon
                 /* = anon
                 /user/login.do = anon
                 /** = authc
