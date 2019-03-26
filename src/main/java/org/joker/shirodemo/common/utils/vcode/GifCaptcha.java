@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * @Author joker
  * @Date 3/25/19 7:32 PM
- * @Description
+ * @Description 获取验证码主类
  */
 public class GifCaptcha extends Captcha {
 
