@@ -49,8 +49,9 @@ public class UserLoginController {
 	 * @return
 	 */
 	@RequestMapping(value="login.do",method=RequestMethod.POST)
-	public Map<String,Object> submitLogin(UUser user, Boolean rememberMe,HttpServletRequest request){
+	public Map<String,Object> submitLogin(UUser user,@RequestParam(defaultValue = "false") Boolean rememberMe,HttpServletRequest request){
         UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), user.getPswd());
+        token.setRememberMe(rememberMe);
         try {
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
@@ -79,6 +80,10 @@ public class UserLoginController {
 			}
 			//跳转地址
 			resultMap.put("back_url", url);
+
+            //更新登录时间 last login time
+            user.setLastLoginTime(new Date());
+            iUUserService.updateByPrimaryKeySelective(user);
 		/**
 		 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 		 */
@@ -90,9 +95,6 @@ public class UserLoginController {
 			resultMap.put("message", "帐号或密码错误");
 		}
 
-		//更新登录时间 last login time
-		user.setLastLoginTime(new Date());
-		iUUserService.updateByPrimaryKeySelective(user);
 		return resultMap;
 	}
 
