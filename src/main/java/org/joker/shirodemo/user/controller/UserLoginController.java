@@ -87,12 +87,9 @@ public class UserLoginController {
 		/**
 		 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 		 */
-		} catch (DisabledAccountException e) {
-			resultMap.put("status", 500);
-			resultMap.put("message", "帐号已经禁用。");
 		} catch (Exception e) {
 			resultMap.put("status", 500);
-			resultMap.put("message", "帐号或密码错误");
+			resultMap.put("message", e.getMessage());
 		}
 
 		return resultMap;

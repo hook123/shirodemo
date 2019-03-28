@@ -1,6 +1,5 @@
 package org.joker.shirodemo.common.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.joker.shirodemo.common.utils.JsonUtil;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,7 +31,7 @@ public class UUser implements Serializable{
     /**邮箱 | 登录帐号*/
     private String email;
     /**密码*/
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)//使密码为只写，不会Json传给前端
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)//使密码为只写，不会让Json传给前端
     private transient String pswd;
     /**创建时间*/
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

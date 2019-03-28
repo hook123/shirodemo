@@ -9,12 +9,28 @@
         <property name="realm" ref="sampleRealm"/>
         <!--<property name="sessionManager" ref="sessionManager"/>-->
         <property name="rememberMeManager" ref="rememberMeManager"/>
-        <!--<property name="cacheManager" ref="customShiroCacheManager"/>-->
+        <property name="cacheManager" ref="customShiroCacheManager"/>
+    </bean>
+
+    <bean id="customShiroCacheManager" class="org.joker.shirodemo.core.shiro.cache.CustomCacheManager">
+        <property name="jedisManager">
+            <bean class="org.joker.shirodemo.core.redis.JedisManager">
+                <property name="jedisPool" >
+                    <ref bean="jedisPool"/>
+                </property>
+            </bean>
+        </property>
     </bean>
 
     <!-- 授权 认证 -->
     <bean id="sampleRealm" class="org.joker.shirodemo.core.shiro.MySampleRealm">
         <property name="credentialsMatcher" ref="hashedCredentialsMatcher"/>
+        <!--启用缓存，默认关闭-->
+        <property name="cachingEnabled" value="true"/>
+        <!--启用身份验证缓存，即缓存AuthenticationInfo，默认false-->
+        <property name="authenticationCachingEnabled" value="true"/>
+        <!--启用授权缓存，即缓存AuthorizationInfo的信息，默认为false-->
+        <property name="authorizationCachingEnabled" value="true"/>
     </bean>
     <!-- 凭证匹配器 info的密码比较器，其中实现了token中密码的加密-->
     <bean id="hashedCredentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -39,6 +55,51 @@
         <!--默认设置1年，这里设置30天，单位是秒-->
         <property name="maxAge" value="2592000"/>
     </bean>
+
+    <!--Session管理器，默认为ServletContainerSessionManager,就是容器的session管理器-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 相隔多久检查一次session的有效性   -->
+        <property name="sessionValidationInterval" value="1800000"/>
+        <!-- session 有效时间为半小时 （毫秒单位）-->
+        <property name="globalSessionTimeout" value="1800000"/>
+        <!--<property name="sessionDAO" ref="customShiroSessionDAO"/>-->
+        <!--session 监听，可以多个。 -->
+        <property name="sessionListeners">
+            <list>
+                <ref bean="customSessionListener"/>
+            </list>
+        </property>
+        <!-- 间隔多少时间检查，不配置是60分钟 -->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <!-- 是否开启 检测，默认开启 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <!-- 是否删除无效的，默认也是开启 -->
+        <property name="deleteInvalidSessions" value="true"/>
+        <!-- 会话Cookie模板 -->
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+
+    <!--SessionCookie模板-->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="SID"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="1800000"/>
+    </bean>
+
+    <!-- 会话验证调度器 -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <!-- 间隔多少时间检查，不配置是60分钟 -->
+        <property name="interval" value="18000000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!--Session监听器，实现超时清除Session-->
+    <bean id="customSessionListener" class="org.joker.shirodemo.core.shiro.listener.CustomSessionListener">
+        <!--暂时配置，此处要配实现类-->
+        <!--<property name="shiroSessionRepository" value="org.joker.shirodemo.core.shiro.cache.JedisShiroSessionRepository"/>-->
+    </bean>
+
 
     <!--此过滤器必须与web.xml中的，过滤器同名-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

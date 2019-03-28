@@ -80,7 +80,7 @@
         <property name="jedisManager" ref="jedisManager"/>
     </bean>
     <!-- redis 的缓存 -->
-    <bean id="jedisManager" class="org.joker.shirodemo.core.shiro.cache.JedisManager">
+    <bean id="jedisManager" class="org.joker.shirodemo.core.redis.JedisManager">
         <property name="jedisPool" ref="jedisPool"/>
     </bean>
     <!-- 静态注入，相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -112,11 +112,11 @@
         <property name="globalSessionTimeout" value="1800000"/>
         <!--<property name="sessionDAO" ref="customShiroSessionDAO"/>-->
         <!-- session 监听，可以多个。 -->
-        <!--<property name="sessionListeners">-->
-            <!--<list>-->
-                <!--<ref bean="customSessionListener"/>-->
-            <!--</list>-->
-        <!--</property>-->
+        <property name="sessionListeners">
+            <list>
+                <ref bean="customSessionListener"/>
+            </list>
+        </property>
         <!-- 间隔多少时间检查，不配置是60分钟 -->
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
         <!-- 是否开启 检测，默认开启 -->
