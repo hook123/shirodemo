@@ -7,12 +7,10 @@ import java.util.Collection;
 
 /**
  *
- * 
  * Session操作
  *
- *
  */
-public interface ShiroSessionRepository {
+public interface ISessionRepository {
 
 	/**
 	 * 存储Session

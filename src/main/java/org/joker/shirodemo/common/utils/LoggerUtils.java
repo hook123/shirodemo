@@ -64,8 +64,8 @@ public class LoggerUtils {
 	/**
 	 * 异常填充值输出
 	 * @param clazz 	目标.Class
-	 * @param fmtString	输出信息key
 	 * @param e			异常类
+	 * @param fmtString	输出信息key
 	 * @param value		输出信息value
 	 */
 	public static void fmtError(Class<? extends Object> clazz,Exception e,String fmtString,Object...value){

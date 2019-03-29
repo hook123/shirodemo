@@ -11,26 +11,25 @@ import org.joker.shirodemo.common.utils.LoggerUtils;
 
 /**
  *
- * Session 操作
+ * Session 持久化操作
  *
  */
 public class CustomShiroSessionDAO extends AbstractSessionDAO{
 
 
-    private ShiroSessionRepository shiroSessionRepository;  
-  
-    public ShiroSessionRepository getShiroSessionRepository() {  
-        return shiroSessionRepository;  
-    }  
-  
-    public void setShiroSessionRepository(  
-            ShiroSessionRepository shiroSessionRepository) {  
-        this.shiroSessionRepository = shiroSessionRepository;  
-    }  
-  
-    @Override  
+    private ISessionRepository iSessionRepository;
+
+    public ISessionRepository getiSessionRepository() {
+        return iSessionRepository;
+    }
+
+    public void setiSessionRepository(ISessionRepository iSessionRepository) {
+        this.iSessionRepository = iSessionRepository;
+    }
+
+    @Override
     public void update(Session session) throws UnknownSessionException {  
-        getShiroSessionRepository().saveSession(session);  
+        getiSessionRepository().saveSession(session);
     }  
   
     @Override  
@@ -41,25 +40,25 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO{
         }  
         Serializable id = session.getId();  
         if (id != null)  
-            getShiroSessionRepository().deleteSession(id);  
+            getiSessionRepository().deleteSession(id);
     }  
   
     @Override  
     public Collection<Session> getActiveSessions() {  
-        return getShiroSessionRepository().getAllSessions();  
+        return getiSessionRepository().getAllSessions();
     }  
   
     @Override  
     protected Serializable doCreate(Session session) {  
         Serializable sessionId = this.generateSessionId(session);  
         this.assignSessionId(session, sessionId);  
-        getShiroSessionRepository().saveSession(session);  
+        getiSessionRepository().saveSession(session);
         return sessionId;  
     }  
 
     @Override  
     protected Session doReadSession(Serializable sessionId) {  
-        return getShiroSessionRepository().getSession(sessionId);
+        return getiSessionRepository().getSession(sessionId);
     }
 
 }

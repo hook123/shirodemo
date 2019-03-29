@@ -145,7 +145,7 @@ public class ShiroCache <K, V> implements Cache<K, V> {
      */
     @Override
     public Set<K> keys() {
-        return jedisManager.keys(DB_INDEX);
+        return jedisManager.keys(DB_INDEX,KEK_PREFIX+"*");
     }
 
     /**
@@ -155,7 +155,7 @@ public class ShiroCache <K, V> implements Cache<K, V> {
      */
     @Override
     public Collection<V> values() {
-        return jedisManager.values(DB_INDEX);
+        return jedisManager.values(DB_INDEX,KEK_PREFIX+"*");
     }
 
 

@@ -5,9 +5,13 @@ import java.util.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.joker.shirodemo.common.model.UUser;
 import org.joker.shirodemo.common.utils.LoggerUtils;
 import org.joker.shirodemo.user.bo.UserOnlineBo;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
 
 /**
  *
@@ -18,13 +22,12 @@ import org.joker.shirodemo.user.bo.UserOnlineBo;
 
 public class CustomSessionManager {
 
-	/**
-	 * session status 
-	 */
 	public static final String SESSION_STATUS ="online-status";
 
-	ShiroSessionRepository shiroSessionRepository;
-	
+	@Resource(name = "iSessionRepository")
+	ISessionRepository shiroSessionRepository;
+
+	@Resource(name = "sessionDao")
 	CustomShiroSessionDAO customShiroSessionDAO;
 	
 	/**
@@ -187,7 +190,7 @@ public class CustomSessionManager {
 		}
 	}
 	public void setShiroSessionRepository(
-			ShiroSessionRepository shiroSessionRepository) {
+			ISessionRepository shiroSessionRepository) {
 		this.shiroSessionRepository = shiroSessionRepository;
 	}
 

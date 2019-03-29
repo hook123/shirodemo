@@ -2,7 +2,7 @@ package org.joker.shirodemo.core.shiro.listener;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
-import org.joker.shirodemo.core.shiro.session.ShiroSessionRepository;
+import org.joker.shirodemo.core.shiro.session.ISessionRepository;
 
 /**
  * @Author joker
@@ -11,7 +11,16 @@ import org.joker.shirodemo.core.shiro.session.ShiroSessionRepository;
  */
 public class CustomSessionListener implements SessionListener {
 
-    private ShiroSessionRepository shiroSessionRepository;
+    private ISessionRepository iSessionRepository;
+
+    public ISessionRepository getiSessionRepository() {
+        return iSessionRepository;
+    }
+
+    public void setiSessionRepository(ISessionRepository iSessionRepository) {
+        this.iSessionRepository = iSessionRepository;
+    }
+
     @Override
     public void onStart(Session session) {
         System.out.println(session.getId()+"==>"+"Start");
@@ -25,14 +34,6 @@ public class CustomSessionListener implements SessionListener {
 
     @Override
     public void onExpiration(Session session) {
-        shiroSessionRepository.deleteSession(session.getId());
-    }
-
-    public ShiroSessionRepository getShiroSessionRepository() {
-        return shiroSessionRepository;
-    }
-
-    public void setShiroSessionRepository(ShiroSessionRepository shiroSessionRepository) {
-        this.shiroSessionRepository = shiroSessionRepository;
+        iSessionRepository.deleteSession(session.getId());
     }
 }

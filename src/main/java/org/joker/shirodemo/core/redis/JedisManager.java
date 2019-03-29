@@ -174,15 +174,15 @@ public class JedisManager {
 
     /**
      * 取出所有key
-     *
+     * @param dbIndex 数据库索引
+     * @param pattern 匹配字符串，取出所有用 *
      * @return
      */
 
-
-    public HashSet keys(int dbIndex) {
+    public HashSet keys(int dbIndex,String pattern) {
         Jedis jedis = getJedis();
         jedis.select(dbIndex);
-        Set<byte[]> keys = jedis.keys("*".getBytes());
+        Set<byte[]> keys = jedis.keys(pattern.getBytes());
         HashSet<Object> set = new HashSet<Object>();
         for (byte[] bs : keys) {
             set.add(SerializeUtil.deserialize(bs));
@@ -192,12 +192,12 @@ public class JedisManager {
 
     /**
      * 取出所有value
-     *
+     * @param dbIndex 数据库索引
+     * @param pattern 匹配字符串，取出所有用 *
      * @return
      */
-
-    public List values(int dbIndex) {
-        Set keys = this.keys(dbIndex);
+    public List values(int dbIndex,String pattern) {
+        Set keys = this.keys(dbIndex,pattern);
         List<Object> values = new ArrayList<Object>();
         for (Object key : keys) {
             byte[] bytes =getValueByKey(dbIndex, SerializeUtil.serialize(key));
@@ -212,9 +212,9 @@ public class JedisManager {
      *
      * @return
      */
-    public int size(int DB_INDEX) {
+    public int size(int dbIndex) {
         Jedis jedis = getJedis();
-        jedis.select(DB_INDEX);
+        jedis.select(dbIndex);
         Long size = jedis.dbSize();
         return size.intValue();
     }
