@@ -53,15 +53,15 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="/static/commons/img/avatar.png" class="user-image">
-                            <span class="hidden-xs">您好 joker , 欢迎回来</span>
+                            <img src="../images/userImg/joker1.jpg" class="user-image">
+                            <span class="hidden-xs">您好 {{currentUser.nickname}} , 欢迎回来</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="user-header">
-                                <img src="/static/commons/img/avatar.png" class="img-circle">
+                                <img src="../images/userImg/joker1.jpg" class="img-circle">
                                 <p>
-                                    joker -
-                                    <small>2019-03-18 16:58:09.0</small>
+                                    <i>{{currentUser.nickname}}</i>
+                                    <small>{{currentUser.lastLoginTime}}</small>
                                 </p>
                             </li>
                             <li class="user-footer">
@@ -279,17 +279,20 @@
 <!-- AdminLTE App -->
 <script src="../framework/adminlte/js/adminlte.js"></script>
 
+<script src="../framework/components/jquery/dist/jquery.cookie.js"></script>
+
 <script type="text/javascript">
     $(function () {
 
-        const app = new Vue({
+        var app = new Vue({
             el: "#app",
             data: {
+                currentUser:{},
                 userPage: {},
                 contentTilte: ""
             },
             created: function () {
-
+                this.currentUser = JSON.parse($.cookie("current"));
             },
             methods: {
                 getUserList: function (pn) {
