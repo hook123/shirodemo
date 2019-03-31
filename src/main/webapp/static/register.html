@@ -5,9 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>用户注册</title>
-    <link rel="stylesheet" href="framework/components/bootstrap/css/bootstrap.css">
-    <script src="framework/components/jquery/dist/jquery.js"></script>
-    <script src="framework/components/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="./framework/components/bootstrap/css/bootstrap.css">
+    <script src="./framework/components/jquery/dist/jquery.js"></script>
+    <script src="./framework/components/bootstrap/js/bootstrap.js"></script>
+    <script src="framework/components/jquery/dist/jquery.md5.js"></script>
     <script>
         $(function () {
             //登录框动画
@@ -23,22 +24,26 @@
 
             //点击登陆按钮时进行的判断
             $("#login-bt").on("click", function () {
+
+                //对密码进行MD5加密，避免传输中的不安全
+                $("#registerForm input[name*='pswd']").each(function (index, domEle) {
+                    var val = $(domEle).val();
+                    $(domEle).val($.md5(val));
+                    console.log($(domEle).val());
+                });
                 $.ajax({
                     type: "post",
-                    url: "./user/login.do",
+                    url: "../user/register",
                     dataType: "json",
-                    data: $('#loginForm').serialize(),
+                    data: $('#registerForm').serialize(),
                     success: function (data) {
                         //用户名和密码校验错误
                         if (200 === data.status) {
                             window.location.href = data.back_url;
                         } else {
-                            if (500 === data.status) {
-                                $(".login-alert").text("该用户不存在或密码错误!!").show();
-                            }
-                            if (300 === data.status) {
-                                $(".login-alert").text("验证码错误").show();
-                            }
+
+                            $(".login-alert").text(data.message).show();
+
                             //抖动
                             for (var i = 0; i < 5; i++) {
                                 $('.login-box').animate({left: "48%"}, 30).animate({left: "52%"}, 30).animate({left: "50%"}, 30);
@@ -55,8 +60,7 @@
     </script>
     <style>
         .container-fluid {
-            background-image: url("images/wall/2.jpg");
-            background: no-repeat center center;
+            background: url("./images/wall/2.jpg") no-repeat center center;
             position: absolute;
             overflow: hidden;
             width: 100%;
@@ -105,6 +109,7 @@
             padding: 50px 100px 50px;
         }
     </style>
+
 
 </head>
 <body>
@@ -184,7 +189,7 @@
     4、font-awesome字体图标，恢复同一行后，高度大于输入框，使用vertical-align:middle，垂直居中修复
     -->
         <div class="login-form">
-            <form id="loginForm">
+            <form id="registerForm">
                 <div class="form-group">
                     <label class="sr-only" for="nickname">昵称</label>
                     <div class="input-group">
@@ -225,20 +230,20 @@
 							<span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon5"
                                   style="top: 0"></span> <input
                             type="password" class="form-control" id="password2"
-                            name="pswd" aria-describedby="sizing-addon5"
+                            name="pswd1" aria-describedby="sizing-addon5"
                             placeholder="请确认密码" required="required">
                     </div>
                 </div>
-                   <div class="form-group">
-                       <div class="input-group" id="checkCoke">
+                <div class="form-group">
+                    <div class="input-group" id="checkCoke">
                         <span class="input-group-addon" id="sizing-addon4" style="top: 0;padding: 0">
-                            <img alt="验证码" title="看不清,请点击图片" src="./common/getGifCode.do"
-                                 onclick="this.src='./common/getGifCode.do?t='+new Date().getTime();"></span>
-                           <input type="text"
-                                  class="form-control" id="checkCode" name="vcode"
-                                  aria-describedby="sizing-addon4" placeholder="请输入验证码" required="required">
-                       </div>
-                   </div>
+                            <img alt="验证码" title="看不清,请点击图片" src="../getGifCode"
+                                 onclick="this.src='../getGifCode?t='+new Date().getTime();"></span>
+                        <input type="text"
+                               class="form-control" id="checkCode" name="vcode"
+                               aria-describedby="sizing-addon4" placeholder="请输入验证码" required="required">
+                    </div>
+                </div>
                 <a id="login-bt" class="btn btn-group-justified btn-info">注册</a>
             </form>
             <div class="login-alert"

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>AdminLTE 2 | 仪表盘</title>
+    <title>后台管理</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -69,7 +69,7 @@
                                     <a href="/admin/user/me" class="btn btn-default btn-flat">我的资料</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="../user/logout.do" class="btn btn-default btn-flat">退出</a>
+                                    <a href="../../user/logout.do" class="btn btn-default btn-flat">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -127,7 +127,7 @@
                 <li class="header">基础</li>
 
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-fw fa-user"></i> <span>用户中心</span>
+                    <a href="javascript:void(0);"><i class="fa fa-fw fa-user"></i> <span>用户中心</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
@@ -299,7 +299,7 @@
                     console.log(pn);
                     var _self = this;
                     _self.contentTilte = "用户列表";
-                    var url = "../member/userlist.do";
+                    var url = "../../member/list";
                     if (pn != null) {
                         url = url + "?pn=" + pn;
                     }

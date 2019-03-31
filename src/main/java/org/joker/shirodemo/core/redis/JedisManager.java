@@ -183,9 +183,9 @@ public class JedisManager {
         Jedis jedis = getJedis();
         jedis.select(dbIndex);
         Set<byte[]> keys = jedis.keys(pattern.getBytes());
-        HashSet<Object> set = new HashSet<Object>();
+        HashSet<byte[]> set = new HashSet();
         for (byte[] bs : keys) {
-            set.add(SerializeUtil.deserialize(bs));
+            set.add(bs);
         }
         return  set;
     }
@@ -197,14 +197,13 @@ public class JedisManager {
      * @return
      */
     public List values(int dbIndex,String pattern) {
-        Set keys = this.keys(dbIndex,pattern);
+        Set<byte[]> keys = this.keys(dbIndex,pattern);
         List<Object> values = new ArrayList<Object>();
-        for (Object key : keys) {
-            byte[] bytes =getValueByKey(dbIndex, SerializeUtil.serialize(key));
+        for (byte[] key : keys) {
+            byte[] bytes =getValueByKey(dbIndex,key);
             values.add(SerializeUtil.deserialize(bytes));
         }
         return values;
-
     }
 
     /**

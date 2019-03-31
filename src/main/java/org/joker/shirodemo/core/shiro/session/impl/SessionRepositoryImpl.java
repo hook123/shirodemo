@@ -92,7 +92,11 @@ public class SessionRepositoryImpl implements ISessionRepository {
     }
 
     private byte[] buildRedisSessionKey(Serializable sessionId) {
-        String preKey = REDIS_SHIRO_SESSION + sessionId;
-        return preKey.getBytes();
+        if (sessionId instanceof String) {
+            String preKey = REDIS_SHIRO_SESSION + sessionId;
+            return preKey.getBytes();
+        } else {
+            return SerializeUtil.serialize(sessionId);
+        }
     }
 }

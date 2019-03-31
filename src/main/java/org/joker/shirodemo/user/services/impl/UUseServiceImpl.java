@@ -35,5 +35,23 @@ public class UUseServiceImpl implements IUUserService {
         return uUserMapper.updateByPrimaryKeySelective(user);
     }
 
+    @Override
+    public Map<String, Object> userRegister(UUser record) {
+        Map map = new HashMap();
+        UUser user = uUserMapper.findUserByEmail(record.getEmail());
+
+        if (null != user) {
+            map.put("status", 500);
+            map.put("message", user.getEmail() + "已注册");
+            return map;
+        }
+
+        uUserMapper.insertSelective(record);
+        map.put("status", 200);
+        map.put("message", "注册成功");
+
+        return map;
+    }
+
 
 }

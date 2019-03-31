@@ -29,7 +29,7 @@ import java.util.Map;
  * @Description
  */
 @RestController
-@RequestMapping("/member")
+@RequestMapping("member")
 public class MemberController {
 
     @Resource
@@ -42,7 +42,7 @@ public class MemberController {
      * @param ps    每页大小
      * @return
      */
-    @RequestMapping(value="/userlist.do",method = RequestMethod.GET)
+    @RequestMapping(value="list",method = RequestMethod.GET)
     public PageInfo<UUser> userList(@RequestParam(defaultValue = "1") Integer pn, @RequestParam(defaultValue = "10") Integer ps){
         PageHelper.startPage(pn,ps);
         List<UUser> all = uUserMapper.findAll();
@@ -50,7 +50,7 @@ public class MemberController {
         return pageInfo;
     }
 
-    @RequestMapping(value = "/getAllSession.do",method = RequestMethod.GET)
+    @RequestMapping(value = "getAllSession",method = RequestMethod.GET)
     public Map getAllSession(){
         Map map =new HashMap();
 

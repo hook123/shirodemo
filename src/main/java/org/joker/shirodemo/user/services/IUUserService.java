@@ -2,6 +2,8 @@ package org.joker.shirodemo.user.services;
 
 import org.joker.shirodemo.common.model.UUser;
 
+import java.util.Map;
+
 /**
  * @Author joker
  * @Date 3/22/19 7:26 PM
@@ -12,4 +14,7 @@ public interface IUUserService {
     UUser findUserByEmail(String email);
 
     int updateByPrimaryKeySelective(UUser user);
+
+    Map<String, Object> userRegister(UUser record);
+
 }

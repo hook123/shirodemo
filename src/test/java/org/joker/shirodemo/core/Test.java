@@ -1,6 +1,5 @@
 package org.joker.shirodemo.core;
 
-import com.sun.crypto.provider.AESKeyGenerator;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.AesCipherService;
@@ -20,7 +19,7 @@ public class Test {
     @org.junit.Test
     public void MD5Test() {
 
-        String password = MathUtil.getMD5("root", "root");
+        String password = MathUtil.getMD5("21232f297a57a5a743894a0e4a801fc3", "admin");
         System.out.println(password);
     }
 

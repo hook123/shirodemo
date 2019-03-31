@@ -63,9 +63,12 @@ public class MySampleRealm extends AuthorizingRealm {
 
         }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPswd(), new MySimpleByteSource(user.getEmail()), getName());
-
-        LoggerUtils.fmtDebug(this.getClass(), "用户：%s认证成功", user.getEmail());
+        SimpleAuthenticationInfo info = null;
+        try {
+            info = new SimpleAuthenticationInfo(user, user.getPswd(), new MySimpleByteSource(user.getEmail()), getName());
+        } catch (Exception e) {
+            LoggerUtils.fmtDebug(this.getClass(), "用户：%s认证失败", user.getEmail());
+        }
         return info;
     }
 }

@@ -5,9 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>欢迎超级管理员登录</title>
-    <link rel="stylesheet" href="framework/components/bootstrap/css/bootstrap.css">
-    <script src="framework/components/jquery/dist/jquery.js"></script>
-    <script src="framework/components/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="./framework/components/bootstrap/css/bootstrap.css">
+    <script src="./framework/components/jquery/dist/jquery.js"></script>
+    <script src="./framework/components/bootstrap/js/bootstrap.js"></script>
+    <script src="framework/components/jquery/dist/jquery.md5.js"></script>
     <script>
         $(function () {
             //登录框动画
@@ -23,22 +24,23 @@
 
             //点击登陆按钮时进行的判断
             $("#login-bt").on("click", function () {
+                //对密码进行MD5加密，避免传输中的不安全
+                $("#loginForm input[name*='pswd']").each(function (index, domEle) {
+                    var val = $(domEle).val();
+                    $(domEle).val($.md5(val))
+                });
                 $.ajax({
                     type: "post",
-                    url: "./user/login.do",
+                    url: "../user/login",
                     dataType: "json",
                     data: $('#loginForm').serialize(),
                     success: function (data) {
                         //用户名和密码校验错误
                         if (200 === data.status) {
-                            window.location.href=data.back_url;
+                            window.location.href = data.back_url;
                         } else {
-                            if (500 === data.status) {
-                                $(".login-alert").text("该用户不存在或密码错误!!").show();
-                            }
-                            if (300 === data.status) {
-                                $(".login-alert").text("验证码错误").show();
-                            }
+                            $(".login-alert").text(data.message).show();
+
                             //抖动
                             for (var i = 0; i < 5; i++) {
                                 $('.login-box').animate({left: "48%"}, 30).animate({left: "52%"}, 30).animate({left: "50%"}, 30);
@@ -55,8 +57,7 @@
     </script>
     <style>
         .container-fluid {
-            background-image: url("images/wall/2.jpg");
-            background: no-repeat center center;
+            background: url("./images/wall/2.jpg") no-repeat center center;
             position: absolute;
             overflow: hidden;
             width: 100%;
@@ -228,8 +229,8 @@
 				<span class="copyright-content"> Powered by <a
                         href="https://kodcloud.com/?kodref=" target="_blank"
                         draggable="false">ShiroDemo v0.1</a> &amp; lamp <a href="#"
-                                                                              class="icon-info-sign copyright-bottom pl-5"
-                                                                              draggable="false"></a>
+                                                                           class="icon-info-sign copyright-bottom pl-5"
+                                                                           draggable="false"></a>
 					<span style="display: none; width: 0; height: 0;"></span>
 				</span>
         </div>
