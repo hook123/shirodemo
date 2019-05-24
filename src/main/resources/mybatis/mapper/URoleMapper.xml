@@ -113,11 +113,11 @@
    
    
    
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from u_role
-    where id = #{id,jdbcType=BIGINT}
+  <select id="selectByPrimaryKey" resultMap="findNowAllPermission_resultMap" parameterType="java.lang.Long" >
+      SELECT r.id , r.name , r.type , pid , url , p.name pname
+      FROM (SELECT * FROM u_role WHERE id=#{roleId,jdbcType=BIGINT}) r
+      LEFT JOIN u_role_permission rp ON r.id=rp.rid
+      LEFT JOIN u_permission p ON p.id=rp.pid
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from u_role

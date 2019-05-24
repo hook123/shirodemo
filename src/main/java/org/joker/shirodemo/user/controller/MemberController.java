@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @Date 3/22/19 7:21 PM
  * @Description
  */
+@RequiresPermissions("member")
 @RestController
 @RequestMapping("member")
 public class MemberController {
@@ -42,6 +44,7 @@ public class MemberController {
      * @param ps    每页大小
      * @return
      */
+    @RequiresPermissions(value = "/member/list")
     @RequestMapping(value="list",method = RequestMethod.GET)
     public PageInfo<UUser> userList(@RequestParam(defaultValue = "1") Integer pn, @RequestParam(defaultValue = "10") Integer ps){
         PageHelper.startPage(pn,ps);
@@ -50,6 +53,7 @@ public class MemberController {
         return pageInfo;
     }
 
+    @RequiresPermissions(value = "getAllSession")
     @RequestMapping(value = "getAllSession",method = RequestMethod.GET)
     public Map getAllSession(){
         Map map =new HashMap();

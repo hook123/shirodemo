@@ -117,7 +117,7 @@ public class JedisManager {
             isBroken = true;
             throw e;
         } finally {
-            LoggerUtils.fmtDebug(getClass(), "删除[%s]结果：%s" , SerializeUtil.deserialize(key).toString(), result);
+            LoggerUtils.fmtDebug(getClass(), "删除[%s]结果：%s" , new String(key), result);
             returnResource(jedis, isBroken);
         }
     }

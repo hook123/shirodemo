@@ -2,6 +2,8 @@ package org.joker.shirodemo.common.controller;
 
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresGuest;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.joker.shirodemo.common.utils.vcode.Captcha;
 import org.joker.shirodemo.common.utils.vcode.GifCaptcha;
@@ -21,6 +23,7 @@ import java.io.IOException;
  */
 @RestController
 public class CommonController {
+
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

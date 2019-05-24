@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.joker.shirodemo.common.model.UUser;
@@ -50,20 +53,22 @@ public class UserLoginController {
 	 * @param response		用来设置cookie。
 	 * @return
 	 */
+	@RequiresGuest
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	public Map<String,Object> submitLogin(UUser user, @RequestParam(defaultValue = "false") Boolean rememberMe,HttpServletRequest request, HttpServletResponse response){
         UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), user.getPswd());
+
         token.setRememberMe(rememberMe);
         try {
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
-            user = (UUser) subject.getPrincipal();
 			resultMap.put("status", 200);
 			resultMap.put("message", "登录成功");
 
 			//跳转地址
 			resultMap.put("back_url", "./admin/admin.html");
             //更新登录时间 last login time
+			user=iUUserService.findUserByEmail(user.getEmail());
             user.setLastLoginTime(new Date());
             iUUserService.updateByPrimaryKeySelective(user);
 			Cookie cookie = new Cookie("current", URLEncoder.encode(user.toString(), "utf-8"));
@@ -72,9 +77,12 @@ public class UserLoginController {
 		/**
 		 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 		 */
-		} catch (Exception e) {
+		} catch (AccountException e) {
 			resultMap.put("status", 500);
 			resultMap.put("message", e.getMessage());
+		}catch (Exception e){
+			resultMap.put("status", 500);
+			resultMap.put("message", "帐号或密码不正确");
 		}
 
 		return resultMap;
@@ -86,6 +94,7 @@ public class UserLoginController {
 	 * 本该返回Map的json对象，但为了方便，先做后台跳转
 	 */
 
+	@RequiresAuthentication
 	@RequestMapping(value="logout",method =RequestMethod.GET)
 	public ModelAndView logout(){
 		try {
@@ -96,10 +105,11 @@ public class UserLoginController {
 			logger.error("errorMessage:" + e.getMessage());
 			LoggerUtils.fmtError(getClass(), e, "退出出现错误，%s。", e.getMessage());
 		}
-		return new ModelAndView("redirect:/login.html");
+		return new ModelAndView("redirect:/static/login.html");
 	}
 
 
+	@RequiresGuest
 	@RequestMapping(value = "register",method = RequestMethod.POST)
 	public Map<String, Object> register(String vcode,UUser user,String pswd1){
 

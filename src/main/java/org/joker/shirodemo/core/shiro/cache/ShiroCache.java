@@ -106,7 +106,7 @@ public class ShiroCache <K, V> implements Cache<K, V> {
     public V remove(K key) throws CacheException {
         V previos = get(key);
         try {
-            jedisManager.deleteByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)));
+            jedisManager.deleteByKey(DB_INDEX, buildCacheKey(key));
         } catch (Exception e) {
             LoggerUtils.error(getClass(), "##ShiroCache##  remove cache  throw exception",e);
         }

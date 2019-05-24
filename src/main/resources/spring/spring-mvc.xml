@@ -2,15 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+
+    <!--开启aop代理，必须配置在spring-mvc中，否则shiro注解不起作用-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- 自动扫描(自动注入) -->
     <context:component-scan base-package="org.joker.shirodemo.*.controller"/>
     <!-- 日期转换 -->
 
     <mvc:annotation-driven conversion-service="dateCovert" />
-
     <!--
     通过mvc:resources设置静态资源，这样servlet就会处理这些静态资源，而不通过控制器
     设置不过滤内容，比如:css,js,img 等资源文件

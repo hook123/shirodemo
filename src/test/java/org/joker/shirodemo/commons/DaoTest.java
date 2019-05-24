@@ -14,7 +14,7 @@ public class DaoTest {
         UPermission uPermission = new UPermission();
         uPermission.setId(123L);
         uPermission.setUrl("http://www.baidu.com");
-        uPermission.setName("李自强");
+        uPermission.setName("123");
         System.out.println(uPermission.toString());
     }
 }

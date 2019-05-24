@@ -14,7 +14,7 @@ public interface URoleMapper {
 
     int insertSelective(URole record);
 
-    URole selectByPrimaryKey(Long id);
+    URole selectByPrimaryKey(Long roleId);
 
     int updateByPrimaryKeySelective(URole record);
 
@@ -25,4 +25,6 @@ public interface URoleMapper {
 	List<URole> findNowAllPermission(Map<String, Object> map);
 	
 	void initData();
+
+	List<URole> findAll();
 }

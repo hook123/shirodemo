@@ -1,21 +1,20 @@
 package org.joker.shirodemo.core.shiro;
 
-import org.apache.log4j.Logger;
+
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.joker.shirodemo.common.model.UUser;
 import org.joker.shirodemo.common.utils.LoggerUtils;
-import org.joker.shirodemo.common.utils.MathUtil;
 import org.joker.shirodemo.core.shiro.cache.MySimpleByteSource;
+import org.joker.shirodemo.permission.services.IPermissionService;
+import org.joker.shirodemo.permission.services.IRoleService;
 import org.joker.shirodemo.user.services.IUUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @Author joker
@@ -28,12 +27,29 @@ public class MySampleRealm extends AuthorizingRealm {
     @Resource
     private IUUserService iUUserService;
 
+    @Resource
+    private IRoleService iRoleService;
+
+    @Resource
+    private IPermissionService iPermissionService;
+
     /**
      * 授权
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+
+        String primaryPrincipal = (String)principalCollection.getPrimaryPrincipal();
+        UUser user = iUUserService.findUserByEmail(primaryPrincipal);
+
+        SimpleAuthorizationInfo info =  new SimpleAuthorizationInfo();
+        //根据用户ID查询角色（role），放入到Authorization里。
+        Set<String> roles = iRoleService.findRoleByUserId(user.getId());
+        info.setRoles(roles);
+        //根据用户ID查询权限（permission），放入到Authorization里。
+        Set<String> permissions = iPermissionService.findPermissionByUserId(user.getId());
+        info.setStringPermissions(permissions);
+        return info;
     }
 
 
@@ -59,16 +75,8 @@ public class MySampleRealm extends AuthorizingRealm {
              */
         } else if (UUser._0.equals(user.getStatus())) {
             throw new DisabledAccountException("帐号已经禁止登录！");
-        } else {
-
         }
-
-        SimpleAuthenticationInfo info = null;
-        try {
-            info = new SimpleAuthenticationInfo(user, user.getPswd(), new MySimpleByteSource(user.getEmail()), getName());
-        } catch (Exception e) {
-            LoggerUtils.fmtDebug(this.getClass(), "用户：%s认证失败", user.getEmail());
-        }
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getEmail(), user.getPswd(), new MySimpleByteSource(user.getEmail()), getName());
         return info;
     }
 }
